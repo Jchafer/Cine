@@ -27,16 +27,42 @@ public class FilCompraEntradesClient {
 		try {
 			Socket socketDeServer = new Socket(IPdeServer, portDeServer);
 			System.out.println("CLIENTE Puerto del servidor " + portDeServer);
-
-			stringRecibido = recibirDatos(socketDeServer);
 			
-			System.out.println(stringRecibido);
+			// Recibe lista peliculas
+			stringRecibido = recibirDatos(socketDeServer);			
+			System.out.println("[Servidor] " + stringRecibido);
 			
+			// Enviar pelicula elegida
 			enviarDatos(socketDeServer);
 			
+			// Recibir lista sesiones
 			stringRecibido = recibirDatos(socketDeServer);
 			System.out.println("[Servidor] " + stringRecibido);
 			
+			// Enviar sesion elegida
+			enviarDatos(socketDeServer);
+			
+			// Recibir mapa
+			stringRecibido = recibirDatos(socketDeServer);
+			System.out.println("[Servidor] " + stringRecibido);
+			
+			// Enviar cantidad tiquets
+			int cantidadTiquets = Integer.valueOf(enviarDatos(socketDeServer));
+			
+			// Recibir peticiones asientos
+			for (int i=0; i < cantidadTiquets; i++){
+				stringRecibido = recibirDatos(socketDeServer);
+				System.out.println("[Servidor] " + stringRecibido);
+				enviarDatos(socketDeServer);
+				stringRecibido = recibirDatos(socketDeServer);
+				System.out.println("[Servidor] " + stringRecibido);
+				enviarDatos(socketDeServer);
+			}
+			
+			// Recibir respuesta
+			stringRecibido = recibirDatos(socketDeServer);
+			System.out.println("[Servidor] " + stringRecibido);
+						
 			closeSocket(socketDeServer);
 			
 		} catch(IOException e) {
@@ -44,12 +70,14 @@ public class FilCompraEntradesClient {
 		}
 	}
 	
-	public static void enviarDatos(Socket socketDeServer) throws IOException {
+	public static String enviarDatos(Socket socketDeServer) throws IOException {
 		OutputStream out = socketDeServer.getOutputStream();
 		DataOutputStream dataOutput = new DataOutputStream(out);
 		
 		String stringAEnviar = sc.nextLine();
 		dataOutput.writeUTF(stringAEnviar);
+		
+		return stringAEnviar;
 	}
 	
 	public static String recibirDatos(Socket socketDeServer) throws IOException {

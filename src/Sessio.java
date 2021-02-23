@@ -176,6 +176,28 @@ public class Sessio {
 	}
 
 	//*********************************************************
+	//Mostra la distribució de SEIENTS a la SALA
+	public synchronized String mapaSessioString(){
+		String mapa = "\n\t --------  MAPA SESSIO  -----------";
+		//CAPÇALERA de la SALA
+		mapa += "\n\t Seient-> ";
+		for (int x=1; x <= this.sala.getTamanyFila(); x++)
+			mapa += x +"  ";
+
+		//COS de la SALA
+		mapa += "\n";
+		for (int i=0; i < this.sala.getTamanyFila(); i++){
+			mapa += "\t Fila "+(i+1)+": ";
+			for (int j=0; j < this.sala.getFiles(); j++){
+				mapa += " "+this.seients[i][j].iconaSeient()+" ";
+			}//endfor	
+			mapa += "\n";
+		}//endfor
+		mapa += "\n\t SIMBOLOGIA: X=ocupat; O=lliure; ?=reservant\n\n";
+		return mapa;
+	}
+		
+	//*********************************************************
 	//Mostra DATA en format espanyol
 	public void mostraDataFormatada(){
 		int day = this.data.get(Calendar.DAY_OF_MONTH);
